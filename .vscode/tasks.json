@@ -1,0 +1,38 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build SANDVEIL",
+      "type": "shell",
+      "command": "cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "Test game logic",
+      "type": "shell",
+      "command": "ctest --test-dir build --output-on-failure",
+      "dependsOn": "Build SANDVEIL",
+      "group": "test",
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "Build PS1 renderer-core tests",
+      "type": "shell",
+      "command": "cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build --target psx_renderer_tests",
+      "group": "build",
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "Test PS1 renderer core",
+      "type": "shell",
+      "command": "ctest --test-dir build -R psx_renderer_tests --output-on-failure",
+      "dependsOn": "Build PS1 renderer-core tests",
+      "group": "test",
+      "problemMatcher": ["$gcc"]
+    }
+  ]
+}
